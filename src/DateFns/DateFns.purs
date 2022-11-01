@@ -4,10 +4,9 @@ import Prelude
 
 import Data.DateTime as DateTime
 import Data.DateTime.Instant as DateTime.Instant
-import Data.Function.Uncurried (Fn3, runFn3)
-import Data.Options (Option, Options, opt, options)
+import Data.Function.Uncurried (Fn2, Fn3, runFn2, runFn3)
 import Data.Time.Duration (Milliseconds)
-import Foreign (Foreign)
+import Prim.Row (class Union)
 
 -- import Unsafe.Coerce (unsafeCoerce)
 
@@ -26,29 +25,43 @@ fromDateTime =
     >>> DateTime.Instant.unInstant
     >>> toDateImpl
 
-data IntlFormatDistanceOptions
+type IntlFormatDistanceOptions =
+  ( unit :: String
+  , locale :: String
+  , localeMatcher :: String
+  , numeric :: String
+  , style :: String
+  )
 
-unit :: Option IntlFormatDistanceOptions String
-unit = opt "unit"
+foreign import intlFormatDistanceImp :: forall opts. Fn3 Date Date opts String
 
-locale :: Option IntlFormatDistanceOptions String
-locale = opt "locale"
-
-localeMatcher :: Option IntlFormatDistanceOptions String
-localeMatcher = opt "localeMatcher"
-
-numeric :: Option IntlFormatDistanceOptions String
-numeric = opt "numeric"
-
-style :: Option IntlFormatDistanceOptions String
-style = opt "style"
-
-foreign import intlFormatDistanceImp :: Fn3 Date Date Foreign String
-
-intlFormatDistance :: Date -> Date -> Options IntlFormatDistanceOptions -> String
+intlFormatDistance :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => Date -> Date -> Record opts -> String
 intlFormatDistance date baseDate opts =
-  runFn3 intlFormatDistanceImp date baseDate (options opts)
+  runFn3 intlFormatDistanceImp date baseDate opts
 
-intlFormatDistance' :: DateTime.DateTime -> DateTime.DateTime -> Options IntlFormatDistanceOptions -> String
+intlFormatDistance' :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => DateTime.DateTime -> DateTime.DateTime -> Record opts -> String
 intlFormatDistance' date baseDate opts =
-  runFn3 intlFormatDistanceImp (fromDateTime date) (fromDateTime baseDate) (options opts)
+  runFn3 intlFormatDistanceImp (fromDateTime date) (fromDateTime baseDate) opts
+
+type Duration =
+  ( years :: Int
+  , months :: Int
+  , weeks :: Int
+  , days :: Int
+  , hours :: Int
+  , minutes :: Int
+  , seconds :: Int
+  )
+
+type FormatDurationImpOptions =
+  ( format :: (Array String)
+  , zero :: Boolean
+  , delimiter :: String
+  , locale :: String
+  )
+
+foreign import formatDurationImp :: forall durs opts. Fn2 durs opts String
+
+formatDuration :: forall durs durs_ opts opts_. Union durs durs_ Duration => Union opts opts_ FormatDurationImpOptions => Record durs -> Record opts -> String
+formatDuration duration opts =
+  runFn2 formatDurationImp duration opts

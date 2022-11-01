@@ -13,10 +13,10 @@ spec = do
   describe "intlFormatDistance" do
     it "show correctly" do
       shouldEqual
-        (intlFormatDistance (fromDateTime $ mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (fromDateTime $ mkUnsafeDateTime 2022 Date.November 1 0 0 0 0) mempty)
+        (intlFormatDistance (fromDateTime $ mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (fromDateTime $ mkUnsafeDateTime 2022 Date.November 1 0 0 0 0) {})
         "12 hours ago"
   describe "intlFormatDistance'" do
     it "show correctly" do
       shouldEqual
-        (intlFormatDistance' (mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0) mempty)
+        (intlFormatDistance' (mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0) {})
         "12 hours ago"

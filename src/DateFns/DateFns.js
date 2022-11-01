@@ -1,5 +1,6 @@
 export {
-  intlFormatDistance as intlFormatDistanceImp
+  intlFormatDistance as intlFormatDistanceImp,
+  formatDuration as formatDurationImp,
 } from 'date-fns'
 
 export function toDateImpl(instant) {
