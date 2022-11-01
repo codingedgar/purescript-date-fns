@@ -26,17 +26,18 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
   describe "intlFormatDistance" do
     it "show correctly" do
       shouldEqual
-        (intlFormatDistance (fromDateTime $ mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (fromDateTime $ mkUnsafeDateTime 2022 Date.November 1 0 0 0 0) {})
+        (intlFormatDistance {} (fromDateTime $ mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (fromDateTime $ mkUnsafeDateTime 2022 Date.November 1 0 0 0 0))
         "12 hours ago"
   describe "intlFormatDistance'" do
     it "show correctly" do
       shouldEqual
-        (intlFormatDistance' (mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0) {})
+        (intlFormatDistance' {} (mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0))
         "12 hours ago"
   describe "formatDuration" do
     it "Format full duration" do
       shouldEqual
         ( formatDuration
+            {}
             { years: 2
             , months: 9
             , weeks: 1
@@ -45,12 +46,12 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
             , minutes: 9
             , seconds: 30
             }
-            {}
         )
         "2 years 9 months 1 week 7 days 5 hours 9 minutes 30 seconds"
     it "Customize the format" do
       shouldEqual
         ( formatDuration
+            { format: [ "months", "weeks" ] }
             { years: 2
             , months: 9
             , weeks: 1
@@ -59,14 +60,14 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
             , minutes: 9
             , seconds: 30
             }
-            { format: [ "months", "weeks" ] }
+
         )
         "9 months 1 week"
     it "Customize the delimiter" do
       shouldEqual
         ( formatDuration
-            { years: 2, months: 9, weeks: 3 }
             { delimiter: ", " }
+            { years: 2, months: 9, weeks: 3 }
         )
         "2 years, 9 months, 3 weeks"
   describe "intervalToDuration" do

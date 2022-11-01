@@ -37,13 +37,13 @@ type IntlFormatDistanceOptions =
 
 foreign import intlFormatDistanceImp :: forall opts. Fn3 Date Date opts String
 
-intlFormatDistance :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => Date -> Date -> Record opts -> String
-intlFormatDistance date baseDate opts =
+intlFormatDistance :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => Record opts -> Date -> Date -> String
+intlFormatDistance opts date baseDate =
   runFn3 intlFormatDistanceImp date baseDate opts
 
-intlFormatDistance' :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => DateTime.DateTime -> DateTime.DateTime -> Record opts -> String
-intlFormatDistance' date baseDate opts =
-  intlFormatDistance (fromDateTime date) (fromDateTime baseDate) opts
+intlFormatDistance' :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => Record opts -> DateTime.DateTime -> DateTime.DateTime -> String
+intlFormatDistance' opts date baseDate =
+  intlFormatDistance opts (fromDateTime date) (fromDateTime baseDate)
 
 type Duration =
   ( years :: Int
@@ -64,8 +64,8 @@ type FormatDurationImpOptions =
 
 foreign import formatDurationImp :: forall durs opts. Fn2 durs opts String
 
-formatDuration :: forall durs durs_ opts opts_. Union durs durs_ Duration => Union opts opts_ FormatDurationImpOptions => Record durs -> Record opts -> String
-formatDuration duration opts =
+formatDuration :: forall durs durs_ opts opts_. Union durs durs_ Duration => Union opts opts_ FormatDurationImpOptions => Record opts -> Record durs -> String
+formatDuration opts duration =
   runFn2 formatDurationImp duration opts
 
 type Interval =
