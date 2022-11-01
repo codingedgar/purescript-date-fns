@@ -13,18 +13,17 @@ to generate this file without the comments in this block.
 { name = "purescript-date-fns"
 , dependencies =
   [ "aff"
-  , "console"
   , "datetime"
   , "effect"
   , "enums"
   , "foreign"
+  , "functions"
   , "maybe"
   , "options"
   , "partial"
   , "prelude"
   , "spec"
   , "spec-discovery"
-  , "unsafe-coerce"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]

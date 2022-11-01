@@ -4,10 +4,9 @@ import Prelude
 
 import Data.DateTime as DateTime
 import Data.DateTime.Instant as DateTime.Instant
+import Data.Function.Uncurried (Fn3, runFn3)
 import Data.Options (Option, Options, opt, options)
 import Data.Time.Duration (Milliseconds)
-import Effect (Effect)
-import Effect.Uncurried (EffectFn3, runEffectFn3)
 import Foreign (Foreign)
 
 -- import Unsafe.Coerce (unsafeCoerce)
@@ -44,12 +43,12 @@ numeric = opt "numeric"
 style :: Option IntlFormatDistanceOptions String
 style = opt "style"
 
-foreign import intlFormatDistanceImp :: EffectFn3 Date Date Foreign String
+foreign import intlFormatDistanceImp :: Fn3 Date Date Foreign String
 
-intlFormatDistance :: Date -> Date -> Options IntlFormatDistanceOptions -> Effect String
+intlFormatDistance :: Date -> Date -> Options IntlFormatDistanceOptions -> String
 intlFormatDistance date baseDate opts =
-  runEffectFn3 intlFormatDistanceImp date baseDate (options opts)
+  runFn3 intlFormatDistanceImp date baseDate (options opts)
 
-intlFormatDistance' :: DateTime.DateTime -> DateTime.DateTime -> Options IntlFormatDistanceOptions -> Effect String
+intlFormatDistance' :: DateTime.DateTime -> DateTime.DateTime -> Options IntlFormatDistanceOptions -> String
 intlFormatDistance' date baseDate opts =
-  runEffectFn3 intlFormatDistanceImp (fromDateTime date) (fromDateTime baseDate) (options opts)
+  runFn3 intlFormatDistanceImp (fromDateTime date) (fromDateTime baseDate) (options opts)
