@@ -1,6 +1,6 @@
 {
   "name": "purescript-date-fns",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "bindings for date-fns",
   "main": "index.js",
   "scripts": {
