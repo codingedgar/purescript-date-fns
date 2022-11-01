@@ -16,12 +16,13 @@ to generate this file without the comments in this block.
   , "datetime"
   , "effect"
   , "enums"
+  , "foreign"
   , "functions"
   , "maybe"
   , "partial"
   , "prelude"
   , "spec"
-  , "spec-discovery"
+  , "unsafe-coerce"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
