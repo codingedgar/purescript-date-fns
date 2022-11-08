@@ -4,7 +4,7 @@
   "description": "bindings for date-fns",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": " TZ=utc NODE_OPTIONS=\"--experimental-specifier-resolution=node\" spago test"
   },
   "repository": {
     "type": "git",

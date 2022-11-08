@@ -1,10 +1,11 @@
 export {
-  intlFormatDistance as intlFormatDistanceImp,
-  formatDuration as formatDurationImp,
-  intervalToDuration as intervalToDurationImp,
+  formatDuration as _formatDuration,
+  intervalToDuration as _intervalToDuration,
+  intlFormatDistance as _intlFormatDistance,
+  parse as _parse
 } from 'date-fns'
 
-export function toDateImpl(instant) {
+export function _toDate(instant) {
   return new Date(instant);
 }
 
@@ -12,6 +13,6 @@ export function toDateImpl(instant) {
  * 
  * @param {Date} date 
  */
-export function showDateImpl(date) {
+export function _showDate(date) {
   return date.toISOString();
 }

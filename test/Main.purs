@@ -3,19 +3,27 @@ module Test.Main where
 import Prelude
 
 import Data.Date as Date
-import DateFns (formatDuration, fromDateTime, intervalToDuration, intervalToDuration', intlFormatDistance, intlFormatDistance')
+import DateFns
+  ( formatDuration
+  , fromDateTime
+  , intervalToDuration
+  , intervalToDuration'
+  , intlFormatDistance
+  , intlFormatDistance'
+  , parse
+  , parse'
+  )
+import DateFns.Locale.Locale (eo)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
+import Effect.Class (liftEffect)
+import Effect.Now (nowDateTime)
 import Test.DateTimeUtils (mkUnsafeDateTime)
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
 import Test.Spec.Runner (runSpec)
 
--- main :: Effect Unit
--- main = launchAff_ do
---   discover "Test\\.Spec\\."
---     >>= runSpec [ consoleReporter ]
 main :: Effect Unit
 main = launchAff_ $ runSpec [ consoleReporter ] do
   describe "fromDateTime" do
@@ -24,14 +32,26 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
         (show (fromDateTime (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0)))
         "2022-11-01T00:00:00.000Z"
   describe "intlFormatDistance" do
-    it "show correctly" do
+    it "show correctly 1" do
       shouldEqual
-        (intlFormatDistance {} (fromDateTime $ mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (fromDateTime $ mkUnsafeDateTime 2022 Date.November 1 0 0 0 0))
+        ( intlFormatDistance
+            { numeric: "always"
+            , unit: "hour"
+            }
+            (fromDateTime $ mkUnsafeDateTime 2022 Date.October 31 12 0 0 0)
+            (fromDateTime $ mkUnsafeDateTime 2022 Date.November 1 0 0 0 0)
+        )
         "12 hours ago"
   describe "intlFormatDistance'" do
     it "show correctly" do
       shouldEqual
-        (intlFormatDistance' {} (mkUnsafeDateTime 2022 Date.October 31 12 0 0 0) (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0))
+        ( intlFormatDistance'
+            { numeric: "always"
+            , unit: "hour"
+            }
+            (mkUnsafeDateTime 2022 Date.October 31 12 0 0 0)
+            (mkUnsafeDateTime 2022 Date.November 1 0 0 0 0)
+        )
         "12 hours ago"
   describe "formatDuration" do
     it "Format full duration" do
@@ -88,4 +108,36 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
             }
         )
         { years: 39, months: 2, days: 20, hours: 7, minutes: 5, seconds: 0 }
+  describe "parse" do
+    it "Parse 11 February 2014 from middle-endian format" do
+      now <- liftEffect nowDateTime
+      ( parse
+          {}
+          (fromDateTime now)
+          "MM/dd/yyyy"
+          "02/11/2014"
+      )
+        # show
+        # shouldEqual "2014-02-11T00:00:00.000Z"
+    it "Parse 28th of February in Esperanto locale in the context of 2010 year" do
+      ( parse
+          { locale: eo
+          }
+          (fromDateTime (mkUnsafeDateTime 2010 Date.January 1 0 0 0 0))
+          "do 'de' MMMM"
+          "28-a de februaro"
+      )
+        # show
+        # shouldEqual "2010-02-28T00:00:00.000Z"
+  describe "parse'" do
+    it "Parse 28th of February in Esperanto locale in the context of 2010 year" do
+      ( parse'
+          { locale: eo
+          }
+          (mkUnsafeDateTime 2010 Date.January 1 0 0 0 0)
+          "do 'de' MMMM"
+          "28-a de februaro"
+      )
+        # show
+        # shouldEqual "2010-02-28T00:00:00.000Z"
 
