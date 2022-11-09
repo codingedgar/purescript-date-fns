@@ -3,16 +3,8 @@ module Test.Main where
 import Prelude
 
 import Data.Date as Date
-import DateFns
-  ( formatDuration
-  , fromDateTime
-  , intervalToDuration
-  , intervalToDuration'
-  , intlFormatDistance
-  , intlFormatDistance'
-  , parse
-  , parse'
-  )
+import Data.Maybe (Maybe(..))
+import DateFns (formatDuration, fromDateTime, intervalToDuration, intervalToDuration', intlFormatDistance, intlFormatDistance', parse, parse', parseJSON, parseJSON')
 import DateFns.Locale.Locale (eo)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
@@ -138,6 +130,16 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
           "do 'de' MMMM"
           "28-a de februaro"
       )
+        # shouldEqual (mkUnsafeDateTime 2010 Date.February 28 0 0 0 0)
+  describe "parseJSON" do
+    it "Parse 28th of February in Esperanto locale in the context of 2010 year" do
+      ( parseJSON "2000-03-15T05:20:10.123Z"
+      )
         # show
-        # shouldEqual "2010-02-28T00:00:00.000Z"
+        # shouldEqual "2000-03-15T05:20:10.123Z"
+  describe "parseJSON'" do
+    it "Parse 28th of February in Esperanto locale in the context of 2010 year" do
+      ( parseJSON' "2000-03-15T05:20:10.123Z"
+      )
+        # shouldEqual (mkUnsafeDateTime 2000 Date.March 15 5 20 10 123)
 

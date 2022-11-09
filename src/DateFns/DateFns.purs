@@ -12,6 +12,8 @@ module DateFns
   , intlFormatDistance'
   , parse
   , parse'
+  , parseJSON
+  , parseJSON'
   ) where
 
 import Prelude
@@ -29,6 +31,7 @@ foreign import data Date :: Type
 
 foreign import _toDate :: Milliseconds -> Date
 foreign import _showDate :: Date -> String
+foreign import _toInstant :: Date -> DateTime.Instant.Instant
 
 instance showDate :: Show Date where
   show :: Date -> String
@@ -39,6 +42,9 @@ fromDateTime =
   DateTime.Instant.fromDateTime
     >>> DateTime.Instant.unInstant
     >>> _toDate
+
+toDateTime :: Date -> DateTime.DateTime
+toDateTime = _toInstant >>> DateTime.Instant.toDateTime
 
 type IntlFormatDistanceOptions =
   ( unit :: String
@@ -130,6 +136,17 @@ parse'
   -> DateTime.DateTime
   -> String
   -> String
-  -> Date
+  -> DateTime.DateTime
 parse' options referenceDate formatString dateString =
-  runFn4 _parse dateString formatString (fromDateTime referenceDate) options
+  toDateTime $ runFn4 _parse dateString formatString (fromDateTime referenceDate) options
+
+foreign import _parseJSON :: Fn1 String Date
+
+-- | https://date-fns.org/v2.29.3/docs/parseJSON
+parseJSON :: String -> Date
+parseJSON = runFn1 _parseJSON
+
+-- TODO: needs a safe version for Invalid Date
+-- | https://date-fns.org/v2.29.3/docs/parseJSON
+parseJSON' :: String -> DateTime.DateTime
+parseJSON' = parseJSON >>> toDateTime
