@@ -1,10 +1,10 @@
 {
   "name": "purescript-date-fns",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "bindings for date-fns",
   "main": "index.js",
   "scripts": {
-    "test": " TZ=utc NODE_OPTIONS=\"--experimental-specifier-resolution=node\" spago test"
+    "test": "TZ=utc NODE_OPTIONS=\"--experimental-specifier-resolution=node\" spago test"
   },
   "repository": {
     "type": "git",

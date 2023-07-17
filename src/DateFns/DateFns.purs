@@ -1,16 +1,29 @@
 module DateFns
   ( format
+  -- , formatDistanceToNow
   , formatDuration
   , intervalToDuration
   , intlFormatDistance
   , parse
   , parseJSON
+  , startOfToday
+  , endOfToday
   ) where
 
 import Prelude
 
-import Data.Function.Uncurried (Fn1, Fn2, Fn3, Fn4, runFn1, runFn2, runFn3, runFn4)
-import DateFns.Types (Date, Duration, FormatDurationImpOptions, FormatOptions, Interval, IntlFormatDistanceOptions, ParseOptions)
+import Data.Function.Uncurried (Fn2, Fn3, Fn4, Fn1, runFn1, runFn2, runFn3, runFn4)
+import DateFns.Types
+  ( Date
+  , Duration
+  , FormatDurationImpOptions
+  , FormatOptions
+  , Interval
+  , IntlFormatDistanceOptions
+  , ParseOptions
+  -- FormatDistanceToNowOptions
+  )
+import Effect (Effect)
 import Foreign (Foreign)
 import Prim.Row (class Union)
 import Unsafe.Coerce (unsafeCoerce)
@@ -63,3 +76,24 @@ format
   -> String
 format options fmt date =
   runFn3 _format date fmt options
+
+-- foreign import _formatDistanceToNow :: forall opts. Fn2 Date opts String
+
+-- formatDistanceToNow
+--   :: forall opts opts_
+--    . Union opts opts_ FormatDistanceToNowOptions
+--   => Record opts
+--   -> Date
+--   -> Effect String
+-- formatDistanceToNow options date =
+--   pure $ runFn2 _formatDistanceToNow date options
+
+foreign import _startOfToday :: Effect Date
+
+startOfToday :: Effect Date
+startOfToday = _startOfToday
+
+foreign import _endOfToday :: Effect Date
+
+endOfToday :: Effect Date
+endOfToday = _endOfToday

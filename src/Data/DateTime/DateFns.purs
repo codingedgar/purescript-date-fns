@@ -5,6 +5,7 @@ import Prelude
 import Data.DateTime as DateTime
 import DateFns as DateFns
 import DateFns.Types (Duration, IntlFormatDistanceOptions, ParseOptions, FormatOptions, fromDateTime, toDateTime)
+import Effect (Effect)
 import Prim.Row (class Union)
 
 intlFormatDistance :: forall opts opts_. Union opts opts_ IntlFormatDistanceOptions => Record opts -> DateTime.DateTime -> DateTime.DateTime -> String
@@ -46,3 +47,9 @@ format
   -> String
 format options fmt date =
   DateFns.format options fmt (fromDateTime date)
+
+startOfToday :: Effect DateTime.DateTime
+startOfToday = DateFns.startOfToday <#> toDateTime
+
+endOfToday :: Effect DateTime.DateTime
+endOfToday = DateFns.endOfToday <#> toDateTime

@@ -70,3 +70,8 @@ type FormatOptions =
   , useAdditionalDayOfYearTokens :: Boolean
   )
 
+-- type FormatDistanceToNowOptions =
+--   ( includeSeconds :: Boolean
+--   , addSuffix :: Boolean
+--   , locale :: Locale
+--   )

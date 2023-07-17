@@ -150,11 +150,28 @@ main = launchAff_ $ runSpec [ consoleReporter ] do
             "28-a de februaro"
         )
           # shouldEqual (mkUnsafeDateTime 2010 Date.February 28 0 0 0 0)
+    -- it "Parse Input dateTimeLocal" do
+    --   ( DateTime.DateFns.parse
+    --       {}
+    --       -- (mkUnsafeDateTime 2022 Date.November 10 0 0 0 0)
+    --       (mkUnsafeDateTime 2010 Date.January 1 0 0 0 0)
+    --       "yyyy-MM-dd'T'HH:mm"
+    --       "2022-11-08T22:27"
+    --   )
+    --     # shouldEqual (mkUnsafeDateTime 2010 Date.February 28 0 0 0 0)
     describe "parseJSON" do
       it "Parse 28th of February in Esperanto locale in the context of 2010 year" do
         ( DateTime.DateFns.parseJSON "2000-03-15T05:20:10.123Z"
         )
           # shouldEqual (mkUnsafeDateTime 2000 Date.March 15 5 20 10 123)
+    describe "format" do
+      it "Represent 11 February 2014 in middle-endian format:" do
+        ( DateTime.DateFns.format
+            {}
+            "MM/dd/yyyy"
+            (mkUnsafeDateTime 2014 Date.February 11 0 0 0 0)
+        )
+          # shouldEqual "02/11/2014"
     describe "format" do
       it "Represent 11 February 2014 in middle-endian format:" do
         ( DateTime.DateFns.format
